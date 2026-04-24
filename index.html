@@ -2,113 +2,284 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>寻猕探心 · 修文猕猴桃溯源</title>
     <style>
-        /* --- 全局样式 --- */
-        * { margin:0; padding:0; box-sizing:border-box; }
+        /* ========== 全局与变量 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --green-dark: #2E5A2E;
+            --green-mid: #3B7A3B;
+            --green-light: #E8F5E9;
+            --gold: #C5A059;
+            --bg: #F5F1EB;
+            --text-main: #1a1a1a;
+            --text-secondary: #5A5A5A;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-            background: linear-gradient(135deg, #f0f5eb 0%, #e8f5e9 100%);
-            min-height: 100vh;
-            padding: 20px;
+            font-family: "PingFang SC", "Noto Serif SC", "Microsoft YaHei", "Georgia", serif;
+            background-color: var(--bg);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 16px;
         }
-        /* --- 溯源卡片样式 --- */
+
+        /* ========== 卡片容器 ========== */
         .card {
-            max-width: 420px; width: 100%;
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,40,0,0.08);
+            max-width: 420px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0, 20, 0, 0.06);
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        /* ========== 头部：品牌Logo与主视觉 ========== */
+        .header {
+            background: linear-gradient(145deg, #1F3B1F 0%, #2E5A2E 100%);
+            padding: 35px 24px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
             overflow: hidden;
         }
-        /* --- 卡片头部 --- */
-        .header {
-            background: linear-gradient(135deg, #3B7A3B 0%, #1F4F1F 100%);
-            padding: 30px 20px; text-align: center; color: white;
+        .header::after {
+            content: "";
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 160px;
+            height: 160px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
         }
-        .header .logo { font-size: 48px; margin-bottom: 8px; }
-        .header h1 { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
-        .header .subtitle { font-size: 13px; opacity: 0.85; margin-top: 4px; }
-        /* --- 信息列表项 --- */
-        .info-list { padding: 24px 20px; }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+        }
+        .brand-text {
+            text-align: left;
+        }
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+        .brand-sub {
+            font-size: 13px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+        .header h2 {
+            font-size: 26px;
+            font-weight: 600;
+            margin: 10px 0 4px;
+        }
+        .header .cert-badge {
+            display: inline-block;
+            background: var(--gold);
+            color: #1F3B1F;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========== 卖点金句区 ========== */
+        .usp-bar {
+            background: #1A2E1A;
+            color: #E8E0C5;
+            text-align: center;
+            padding: 12px 20px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(0,0,0,0.2);
+        }
+
+        /* ========== 溯源信息列表 ========== */
+        .info-section {
+            padding: 24px;
+            background: #fff;
+        }
         .info-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 0; border-bottom: 1px dashed #e0e0e0; font-size: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px dashed #E0D9CC;
         }
-        .info-item:last-child { border-bottom: none; }
-        .info-label { color: #666; font-weight: 500; flex-shrink: 0; margin-right: 12px; }
-        .info-value { color: #1a1a1a; font-weight: 600; text-align: right; word-break: break-all; }
-        .highlight { color: #3B7A3B; }
-        /* --- 富硒标签 --- */
-        .badge {
-            display: inline-block; background: #e8f5e9; color: #2e7d32;
-            padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 700;
+        .info-item:last-child {
+            border-bottom: none;
         }
-        /* --- 底部信息 --- */
-        .footer {
-            padding: 20px; text-align: center; background: #fafafa;
-            color: #888; font-size: 12px; border-top: 1px solid #f0f0f0;
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .footer strong { color: #555; }
+        .info-value {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 15px;
+            text-align: right;
+            max-width: 60%;
+        }
+        .highlight {
+            color: var(--green-dark);
+            font-weight: 700;
+        }
+        .seal {
+            background: #F9F3E7;
+            border: 1px solid #DBCA9E;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #7A6B36;
+            margin-left: 6px;
+        }
+
+        /* ========== 行动号召按钮 ========== */
+        .cta-container {
+            padding: 0 24px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .btn-primary {
+            background: var(--green-mid);
+            color: white;
+            text-align: center;
+            padding: 16px;
+            border-radius: 38px;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 1px;
+            text-decoration: none;
+            box-shadow: 0 8px 18px rgba(46, 90, 46, 0.3);
+            transition: 0.2s;
+        }
+        .btn-outline {
+            text-align: center;
+            color: var(--green-dark);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        /* ========== 底部保障说明 ========== */
+        .footer-note {
+            background: #FAF8F4;
+            padding: 20px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: #8C7A5C;
+            border-top: 1px solid #EDE8DD;
+            line-height: 1.7;
+        }
+        .footer-note strong {
+            color: #5A4A31;
+        }
     </style>
 </head>
 <body>
-
     <div class="card">
-        <!-- 头部：品牌标识区域 -->
+
+        <!-- 头部：Logo + 产品名 -->
         <div class="header">
-            <div class="logo">🥝</div>
-            <h1>修文猕猴桃 · 贵长特级</h1>
-            <div class="subtitle">🍃 寻猕探心 · 一物一码溯源认证</div>
+            <div class="logo-container">
+                <div class="logo-icon">🥝</div>
+                <div class="brand-text">
+                    <div class="brand-name">寻 猕 探 心</div>
+                    <div class="brand-sub">Xunmi Tanxin</div>
+                </div>
+            </div>
+            <h2>修文猕猴桃 · 贵长特级</h2>
+            <div class="cert-badge">🏅 国家地理标志保护产品</div>
         </div>
 
-        <!-- 中间：动态溯源信息列表 -->
-        <div class="info-list" id="info-container">
-            <!-- JavaScript将在此处动态填充数据 -->
+        <!-- 卖点金句 -->
+        <div class="usp-bar">
+            🌿 来自贵州深山的富硒生态猕猴桃，每一颗都是看得见的安心
         </div>
 
-        <!-- 底部：品牌故事与产地说明 -->
-        <div class="footer">
+        <!-- 动态溯源信息区 -->
+        <div class="info-section" id="info-container">
+            <!-- 数据由JavaScript根据参数动态渲染 -->
+        </div>
+
+        <!-- 购买按钮 + 引导 -->
+        <div class="cta-container">
+            <a href="#" class="btn-primary">🛒 立即购买同款</a>
+            <a href="#" class="btn-outline">🎁 企业团购 / 认养果园咨询</a>
+        </div>
+
+        <!-- 底部 -->
+        <div class="footer-note">
             <strong>贵州 · 修文县平滩村</strong><br>
-            国家地理标志保护产品 | 土壤天然富硒认证<br>
+            中国猕猴桃之乡 | 土壤天然富硒认证 | 30年品牌沉淀<br>
             知行合一 · 用心种出来的好果子
         </div>
     </div>
 
     <script>
         // ==========================================
-        // 一物一码核心逻辑：从网址参数读取数据
+        // 一物一码核心参数解析
         // ==========================================
         function getUrlParam(paramName) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(paramName);
         }
 
-        // 尝试从网址参数里获取溯源数据，如果没有，则使用默认值
-        // 示例网址：https://你的域名/?orchard=黄良华&date=2026-10-12&se=0.12&sugar=18:1&id=XMTX-A001
         const orchard = getUrlParam('orchard') || '黄良华果园 · 3号地块';
         const farmer  = getUrlParam('farmer')  || '黄良华';
         const date    = getUrlParam('date')    || '2026年10月12日';
         const se      = getUrlParam('se')      || '0.12 mg/kg';
-        const sugar   = getUrlParam('sugar')   || '18:1';
+        const sugar   = getUrlParam('sugar')   || '18:1（黄金酸甜比）';
         const traceId = getUrlParam('id')      || 'XMTX-A001';
 
-        // 构建溯源信息数组（标签名 + 数值）
+        // 溯源数据数组
         const infoData = [
             { label: '🍑 产品名称', value: '贵长猕猴桃（特级精选）' },
             { label: '📍 产地果园', value: orchard },
             { label: '👨‍🌾 种植果农', value: farmer },
             { label: '📅 采摘日期', value: date },
-            { label: '🧪 硒含量',    value: se + ' <span class="badge">富硒认证</span>' },
+            { label: '🧪 硒含量',    value: se + ' <span class="seal">富硒认证</span>' },
             { label: '🍬 黄金甜酸比', value: sugar },
             { label: '🌱 种植方式',   value: '绿肥翻压 · 林下养蚯蚓' },
             { label: '🆔 溯源编码',   value: traceId }
         ];
 
-        // 将上述数据渲染到页面中
+        // 渲染到页面
         const container = document.getElementById('info-container');
         infoData.forEach(item => {
             const div = document.createElement('div');
@@ -120,6 +291,5 @@
             container.appendChild(div);
         });
     </script>
-
 </body>
 </html>
