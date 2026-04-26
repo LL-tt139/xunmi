@@ -2,638 +2,311 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>寻弥探心 · 一物一码溯源</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻弥探心 - 猕猴桃一物一码溯源</title>
     <style>
-        :root {
-            --green-deep: #1A3C2A;
-            --green-mid: #2E5A3B;
-            --green-leaf: #4A7C59;
-            --green-light: #8DB580;
-            --gold: #C4A24E;
-            --gold-light: #F2E8D0;
-            --cream: #FDF9F2;
-            --white: #FFFFFF;
-            --text-dark: #1C1C1C;
-            --text-mid: #5A5A5A;
-            --text-light: #8C8C8C;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: "Microsoft YaHei", system-ui, sans-serif;
         }
 
+        /* 动态果园流动背景 */
         body {
-            font-family: "PingFang SC", "Noto Serif SC", "Microsoft YaHei", serif;
-            background-color: #E8EDE4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            padding: 0;
-            margin: 0;
+            /* 清新果园渐变底色 */
+            background: linear-gradient(160deg, #edf7ed 0%, #d7ecd8 40%, #b8ddba 100%);
+            background-size: 400% 400%;
+            /* 背景缓慢动态流动动画 */
+            animation: orchardBg 20s ease infinite alternate;
+            padding: 40px 20px;
         }
 
-        /* ========== 手机屏幕容器 ========== */
-        .phone-screen {
-            width: 100%;
-            max-width: 430px;
-            min-height: 100vh;
-            background: linear-gradient(175deg, #DCE8D5 0%, #E8EDE4 5%, #D5E0CE 15%, #C8D9BF 30%, #E2EBDA 50%, #DCE8D5 70%, #E8EDE4 100%);
+        @keyframes orchardBg {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 100%; }
+        }
+
+        /* 页面容器（手机端居中适配） */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
             position: relative;
-            overflow-x: hidden;
-            overflow-y: auto;
+            z-index: 2;
         }
 
-        /* ========== 背景故事层 ========== */
-        .bg-layer {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 430px;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        /* 远山轮廓 */
-        .bg-mountains {
-            position: absolute;
-            bottom: 55%;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            background:
-                radial-gradient(ellipse at 20% 90%, rgba(74, 124, 89, 0.25) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 85%, rgba(46, 90, 59, 0.3) 0%, transparent 55%),
-                radial-gradient(ellipse at 50% 95%, rgba(26, 60, 42, 0.2) 0%, transparent 50%);
-            z-index: 0;
-        }
-
-        /* 光晕 - 营造自然光感 */
-        .bg-glow-top {
-            position: absolute;
-            top: -60px;
-            right: -40px;
-            width: 220px;
-            height: 220px;
-            background: radial-gradient(circle, rgba(141, 181, 128, 0.35) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        .bg-glow-bottom {
-            position: absolute;
-            bottom: 15%;
-            left: -50px;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(196, 162, 78, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        .bg-glow-center {
-            position: absolute;
-            top: 38%;
-            right: -30px;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(74, 124, 89, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-
-        /* 隐约的叶片纹理 */
-        .bg-leaves {
-            position: absolute;
-            top: 25%;
-            left: 8%;
-            font-size: 60px;
-            opacity: 0.07;
-            transform: rotate(-15deg);
-            z-index: 0;
-        }
-        .bg-leaves2 {
-            position: absolute;
-            top: 58%;
-            right: 5%;
-            font-size: 50px;
-            opacity: 0.06;
-            transform: rotate(25deg);
-            z-index: 0;
-        }
-        .bg-leaves3 {
-            position: absolute;
-            top: 75%;
-            left: 12%;
-            font-size: 45px;
-            opacity: 0.05;
-            transform: rotate(-10deg);
-            z-index: 0;
-        }
-
-        /* 飘落的花絮 */
-        .bg-petal {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: rgba(141, 181, 128, 0.3);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        .bg-petal:nth-child(1) { top: 18%; left: 15%; animation: floatPetals 6s ease-in-out infinite; }
-        .bg-petal:nth-child(2) { top: 32%; right: 18%; animation: floatPetals 8s ease-in-out 1s infinite; }
-        .bg-petal:nth-child(3) { top: 65%; left: 22%; animation: floatPetals 7s ease-in-out 0.5s infinite; }
-        .bg-petal:nth-child(4) { top: 78%; right: 14%; animation: floatPetals 9s ease-in-out 2s infinite; }
-
-        @keyframes floatPetals {
-            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-15px) rotate(180deg); opacity: 0.7; }
-        }
-
-        /* ========== 内容层 ========== */
-        .content-layer {
-            position: relative;
-            z-index: 1;
-            padding: 0 0 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* ========== 顶部Logo区 ========== */
-        .hero-section {
-            text-align: center;
-            padding: 40px 24px 20px;
-            position: relative;
-        }
-        .hero-logo {
-            width: 72px;
-            height: 72px;
-            background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 100%);
-            border-radius: 22px;
-            margin: 0 auto 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 34px;
-            box-shadow: 0 10px 28px rgba(26, 60, 42, 0.3);
-        }
-        .hero-brand {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: var(--text-dark);
-        }
-        .hero-sub {
-            font-size: 13px;
-            color: var(--text-mid);
-            letter-spacing: 2px;
-            margin-top: 6px;
-            font-style: italic;
-        }
-
-        /* ========== 溯源主卡片 ========== */
-        .trace-card {
-            margin: 0 16px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+        /* 顶部圆形Logo */
+        .top-logo {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 20px;
+            display: block;
             border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 8px 32px rgba(0, 20, 0, 0.06);
-            overflow: hidden;
-        }
-        .trace-card-header {
-            background: linear-gradient(135deg, rgba(26, 60, 42, 0.06) 0%, rgba(74, 124, 89, 0.04) 100%);
-            padding: 18px 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .trace-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--green-mid);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            color: white;
-        }
-        .trace-card-header h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .trace-card-body {
-            padding: 4px 0;
-        }
-        .trace-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-        }
-        .trace-row:last-child {
-            border-bottom: none;
-        }
-        .trace-label {
-            font-size: 14px;
-            color: var(--text-mid);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .trace-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-dark);
-            text-align: right;
-        }
-        .trace-badge {
-            display: inline-block;
-            background: #F0F7E8;
-            color: var(--green-mid);
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 6px;
+            object-fit: contain;
+            background: #2e5c3a;
+            padding:8px;
+            box-shadow: 0 6px 18px rgba(30, 80, 40, 0.15);
         }
 
-        /* ========== 果农故事卡片 ========== */
-        .farmer-card {
-            margin: 0 16px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border: 1px solid rgba(196, 162, 78, 0.3);
-            box-shadow: 0 6px 20px rgba(0, 20, 0, 0.04);
+        h1 {
+            text-align: center;
+            font-size: 42px;
+            color: #1a1a1a;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            font-weight: 600;
         }
-        .farmer-avatar {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, #F2E8D0 0%, #E8D5A0 100%);
-            border-radius: 50%;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            border: 2px solid rgba(196, 162, 78, 0.4);
-        }
-        .farmer-info h4 {
+
+        .subtitle {
+            text-align: center;
             font-size: 16px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .farmer-info p {
-            font-size: 13px;
-            color: var(--text-mid);
-            margin-top: 2px;
-            line-height: 1.5;
+            color: #444;
+            margin-bottom: 35px;
+            letter-spacing: 2px;
         }
 
-        /* ========== 多媒体入口（视频+报告+甜度） ========== */
-        .media-strip {
-            margin: 0 16px;
-            display: flex;
-            gap: 10px;
-        }
-        .media-item {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.75);
+        /* 通用卡片样式 */
+        .card {
+            background: rgba(255,255,255,0.93);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 18px;
-            padding: 18px 10px;
-            text-align: center;
-            text-decoration: none;
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            box-shadow: 0 4px 14px rgba(0, 20, 0, 0.03);
-            transition: transform 0.2s;
-        }
-        .media-item:active {
-            transform: scale(0.96);
-        }
-        .media-icon {
-            font-size: 28px;
-            margin-bottom: 6px;
-        }
-        .media-label {
-            font-size: 12px;
-            color: var(--text-mid);
-            font-weight: 600;
-        }
-        .media-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-top: 2px;
+            border-radius: 22px;
+            padding: 26px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 22px rgba(28, 68, 32, 0.07);
         }
 
-        /* ========== 云认养板块 ========== */
-        .adopt-section {
-            margin: 0 16px;
-            background: linear-gradient(155deg, #1A3C2A 0%, #234D32 30%, #2E5A3B 60%, #1F4028 100%);
-            border-radius: 26px;
-            padding: 24px 20px;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 14px 32px rgba(26, 60, 42, 0.35);
-        }
-        .adopt-section::before {
-            content: "";
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 160px;
-            height: 160px;
-            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .adopt-section::after {
-            content: "";
-            position: absolute;
-            bottom: -30px;
-            left: -30px;
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, rgba(196, 162, 78, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        .adopt-header {
+        .card-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            position: relative;
-            z-index: 1;
+            gap:12px;
+            font-size:24px;
+            font-weight:bold;
+            color:#25502c;
+            margin-bottom:22px;
         }
-        .adopt-header .adopt-icon {
-            font-size: 32px;
-        }
-        .adopt-header h3 {
-            font-size: 21px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .adopt-price-row {
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-            margin: 18px 0 10px;
-            position: relative;
-            z-index: 1;
-        }
-        .adopt-currency {
-            font-size: 20px;
-            font-weight: 500;
-            opacity: 0.85;
-        }
-        .adopt-amount {
-            font-size: 50px;
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -1px;
-        }
-        .adopt-unit {
-            font-size: 14px;
-            opacity: 0.8;
-            font-weight: 500;
-        }
-        .adopt-benefits {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 14px 0 20px;
-            position: relative;
-            z-index: 1;
-        }
-        .adopt-benefit-tag {
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(4px);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .adopt-btn {
-            display: block;
-            background: var(--gold);
-            color: #1A3C2A;
-            text-align: center;
-            padding: 14px;
-            border-radius: 32px;
-            font-weight: 700;
-            font-size: 17px;
-            text-decoration: none;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-            transition: transform 0.2s;
-        }
-        .adopt-btn:active {
-            transform: scale(0.97);
+        .card-icon{
+            width:42px;
+            height:42px;
+            background:#47a856;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
         }
 
-        /* ========== 购买按钮 ========== */
-        .buy-section {
-            margin: 0 16px;
+        /* 果园信息档案行 */
+        .info-line{
+            display:flex;
+            justify-content:space-between;
+            padding:14px 0;
+            font-size:18px;
+            border-bottom:1px solid #eeeeee;
         }
-        .buy-btn {
-            display: block;
-            background: var(--green-mid);
-            color: white;
-            text-align: center;
-            padding: 16px;
-            border-radius: 32px;
-            font-weight: 700;
-            font-size: 18px;
-            text-decoration: none;
-            letter-spacing: 2px;
-            box-shadow: 0 10px 24px rgba(46, 90, 59, 0.35);
-            transition: transform 0.2s;
-        }
-        .buy-btn:active {
-            transform: scale(0.97);
+        .info-line:last-child{border:none;}
+        .tag-rich-se{
+            background:#dff0d8;
+            color:#2c7c31;
+            padding:4px 12px;
+            border-radius:14px;
+            font-size:14px;
         }
 
-        /* ========== 底部信赖区 ========== */
-        .trust-footer {
-            text-align: center;
-            padding: 8px 24px 30px;
-            font-size: 12px;
-            color: var(--text-light);
-            line-height: 1.8;
+        /* 农户介绍模块（插入宣传人物图） */
+        .farmer-block{
+            display:flex;
+            gap:18px;
+            align-items:center;
         }
-        .trust-footer .cert-icons {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-mid);
+        /* 插入你上传的宣传人物.png */
+        .farmer-portrait{
+            width:115px;
+            height:115px;
+            border-radius:50%;
+            object-fit:cover;
+            flex-shrink:0;
+            border:3px solid #e6f3e8;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        }
+        .farmer-name{
+            font-size:23px;
+            font-weight:bold;
+            margin-bottom:10px;
+            color:#222;
+        }
+        .farmer-desc{
+            font-size:16px;
+            line-height:1.7;
+            color:#333;
+        }
+
+        /* 底部三功能入口 */
+        .func-grid{
+            display:grid;
+            grid-template-columns:1fr 1fr 1fr;
+            gap:16px;
+            margin-bottom:22px;
+        }
+        .func-item{
+            background:rgba(255,255,255,0.92);
+            border-radius:18px;
+            padding:26px 12px;
+            text-align:center;
+        }
+        .func-icon{
+            font-size:32px;
+            margin-bottom:10px;
+            color:#25502c;
+        }
+
+        /* 认养专属板块 */
+        .adopt-area{
+            background:#285839;
+            color:white;
+            border-radius:26px;
+            padding:32px 26px;
+        }
+        .adopt-title{
+            font-size:30px;
+            font-weight:bold;
+            margin-bottom:22px;
+        }
+        .price-text{
+            font-size:75px;
+            font-weight:900;
+        }
+        .price-unit{
+            font-size:22px;
+            opacity:0.9;
+        }
+        .tag-group{
+            display:flex;
+            gap:14px;
+            flex-wrap:wrap;
+            margin:28px 0;
+        }
+        .adopt-tag{
+            background:rgba(255,255,255,0.18);
+            padding:9px 20px;
+            border-radius:22px;
+            font-size:16px;
+        }
+        .btn-gold{
+            width:100%;
+            background:linear-gradient(90deg,#b58409,#d1ad36);
+            border:none;
+            color:white;
+            font-size:22px;
+            padding:18px;
+            border-radius:50px;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+        .btn-gold:hover{
+            transform:translateY(-3px);
+            box-shadow:0 10px 20px rgba(0,0,0,0.2);
+        }
+        .btn-buy-bottom{
+            width:100%;
+            background:#285839;
+            color:white;
+            border:none;
+            border-radius:50px;
+            padding:19px;
+            font-size:22px;
+            margin-top:18px;
+            cursor:pointer;
         }
     </style>
 </head>
 <body>
-    <div class="phone-screen">
+    <div class="container">
 
-        <!-- 背景故事层 -->
-        <div class="bg-layer">
-            <div class="bg-mountains"></div>
-            <div class="bg-glow-top"></div>
-            <div class="bg-glow-center"></div>
-            <div class="bg-glow-bottom"></div>
-            <div class="bg-leaves">🌿</div>
-            <div class="bg-leaves2">🍃</div>
-            <div class="bg-leaves3">🌱</div>
-            <div class="bg-petal"></div>
-            <div class="bg-petal"></div>
-            <div class="bg-petal"></div>
-            <div class="bg-petal"></div>
-        </div>
+        <!-- 1. 顶部插入你上传的 标志.png Logo -->
+        <img class="top-logo" src="标志.png" alt="寻弥探心 专属Logo">
 
-        <!-- 内容层 -->
-        <div class="content-layer">
+        <h1>寻弥探心</h1>
+        <div class="subtitle">一物一码溯源 · 您的专属猕猴桃档案</div>
 
-            <!-- 头部品牌 -->
-            <div class="hero-section">
-                <div class="hero-logo">🥝</div>
-                <div class="hero-brand">寻 弥 探 心</div>
-                <div class="hero-sub">一物一码溯源 · 您的专属猕猴桃档案</div>
+        <!-- 2. 果园信息档案卡片 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">📋</span>
+                果园信息档案
             </div>
-
-            <!-- 溯源信息卡片 -->
-            <div class="trace-card">
-                <div class="trace-card-header">
-                    <div class="trace-icon">📋</div>
-                    <h3>果园信息档案</h3>
-                </div>
-                <div class="trace-card-body" id="trace-body"></div>
+            <div class="info-line">
+                <span>🍎 产品名称</span>
+                <span>贵长猕猴桃（特级精选）</span>
             </div>
-
-            <!-- 果农故事 -->
-            <div class="farmer-card" id="farmer-card">
-                <div class="farmer-avatar">👨‍🌾</div>
-                <div class="farmer-info">
-                    <h4 id="farmer-name">黄良华</h4>
-                    <p id="farmer-story">返乡创业12年，从100亩到带动全村，用心种出每一颗“贵长”好果子。他说：“猕猴桃是有灵性的，你对它好，它就对你好。”</p>
-                </div>
+            <div class="info-line">
+                <span>📍 产地果园</span>
+                <span>黄良华果园 · 3号地块</span>
             </div>
-
-            <!-- 多媒体入口 -->
-            <div class="media-strip">
-                <a href="#" class="media-item">
-                    <div class="media-icon">🎬</div>
-                    <div class="media-label">生长视频</div>
-                </a>
-                <a href="#" class="media-item">
-                    <div class="media-icon">📋</div>
-                    <div class="media-label">检测报告</div>
-                </a>
-                <div class="media-item">
-                    <div class="media-icon">🍬</div>
-                    <div class="media-label">甜酸比</div>
-                    <div class="media-value" id="sweetness-display">18:1</div>
-                </div>
+            <div class="info-line">
+                <span>🗓️ 采摘日期</span>
+                <span>2026.10.12</span>
             </div>
-
-            <!-- 云认养 -->
-            <div class="adopt-section">
-                <div class="adopt-header">
-                    <span class="adopt-icon">🌱</span>
-                    <h3>成为“弥”的主人</h3>
-                </div>
-                <div class="adopt-price-row">
-                    <span class="adopt-currency">¥</span>
-                    <span class="adopt-amount">799</span>
-                    <span class="adopt-unit">/年/平米</span>
-                </div>
-                <div class="adopt-benefits">
-                    <span class="adopt-benefit-tag">🍑 特级果配送</span>
-                    <span class="adopt-benefit-tag">📸 实时监控</span>
-                    <span class="adopt-benefit-tag">📜 云土地证</span>
-                    <span class="adopt-benefit-tag">🎁 专属礼盒</span>
-                </div>
-                <a href="#" class="adopt-btn">立即认养 →</a>
+            <div class="info-line">
+                <span>🧪 硒含量</span>
+                <span>0.12 mg/kg <span class="tag-rich-se">富硒</span></span>
             </div>
-
-            <!-- 立即购买 -->
-            <div class="buy-section">
-                <a href="#" class="buy-btn">🛒 立即购买 特级果</a>
+            <div class="info-line">
+                <span>🔤 溯源编码</span>
+                <span>XMTX-A001</span>
             </div>
-
-            <!-- 底部信赖保障 -->
-            <div class="trust-footer">
-                <div class="cert-icons">
-                    <span>🏅 国家地理标志</span>
-                    <span>🧪 富硒认证</span>
-                    <span>🌿 绿色种植</span>
-                </div>
-                贵州 · 修文县平滩村 · 黄良华果园<br>
-                30年匠心品牌 · 中国猕猴桃之乡
+            <div class="info-line">
+                <span>📦 包装日期</span>
+                <span>2026/4/26</span>
             </div>
         </div>
+
+        <!-- 3. 农户介绍 插入你上传的 宣传人物.png -->
+        <div class="card farmer-block">
+            <img class="farmer-portrait" src="宣传人物.png" alt="农户 黄良华">
+            <div>
+                <div class="farmer-name">黄良华</div>
+                <div class="farmer-desc">
+                    返乡创业12年，从100亩到带动全村，用心种出每一颗“贵长”好果子。他说：“猕猴桃是有灵性的，你对它好，它就对你好。”
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 三大功能模块 -->
+        <div class="func-grid">
+            <div class="func-item">
+                <div class="func-icon">🎬</div>
+                <div>生长视频</div>
+            </div>
+            <div class="func-item">
+                <div class="func-icon">📋</div>
+                <div>检测报告</div>
+            </div>
+            <div class="func-item">
+                <div class="func-icon">🍬</div>
+                <div>甜酸比 18:1</div>
+            </div>
+        </div>
+
+        <!-- 5. 果园认养板块 -->
+        <div class="adopt-area">
+            <div class="adopt-title">🌱 成为“弥”的主人</div>
+            <div class="price-text">¥799 <span class="price-unit">/年/平米</span></div>
+
+            <div class="tag-group">
+                <span class="adopt-tag">🍎 特级果配送</span>
+                <span class="adopt-tag">📹 实时监控</span>
+                <span class="adopt-tag">📜 云土地证</span>
+                <span class="adopt-tag">🎁 专属礼盒</span>
+            </div>
+
+            <button class="btn-gold">立即认养 →</button>
+        </div>
+
+        <button class="btn-buy-bottom">🛒 立即购买 特级果</button>
+
     </div>
-
-    <script>
-        // 一物一码参数解析
-        function getParam(name) {
-            const p = new URLSearchParams(window.location.search);
-            return p.get(name);
-        }
-
-        const orchard = getParam('orchard') || '黄良华果园 · 3号地块';
-        const farmer = getParam('farmer') || '黄良华';
-        const date = getParam('date') || '2026.10.12';
-        const se = getParam('se') || '0.12 mg/kg';
-        const sugarVal = getParam('sugar') || '18:1';
-        const traceId = getParam('id') || 'XMTX-A001';
-
-        // 溯源数据
-        const traceData = [
-            { label: '🍑 产品名称', value: '贵长猕猴桃（特级精选）' },
-            { label: '📍 产地果园', value: orchard },
-            { label: '📅 采摘日期', value: date },
-            { label: '🧪 硒含量', value: se + ' <span class="trace-badge">富硒</span>' },
-            { label: '🆔 溯源编码', value: traceId },
-            { label: '📦 包装日期', value: new Date().toLocaleDateString('zh-CN') }
-        ];
-
-        const container = document.getElementById('trace-body');
-        traceData.forEach(item => {
-            const row = document.createElement('div');
-            row.className = 'trace-row';
-            row.innerHTML = `
-                <span class="trace-label">${item.label}</span>
-                <span class="trace-value">${item.value}</span>
-            `;
-            container.appendChild(row);
-        });
-
-        // 更新果农姓名
-        document.getElementById('farmer-name').textContent = farmer;
-        // 更新甜酸比
-        document.getElementById('sweetness-display').textContent = sugarVal;
-    </script>
 </body>
 </html>
